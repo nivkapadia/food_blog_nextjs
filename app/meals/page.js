@@ -1,9 +1,16 @@
 import Link from 'next/link'
+import { Suspense } from 'react'
 import classes from './page.module.css'
 import MealsGrid from '@/components/meals/meals-grid'
+import { getMeals } from '@/lib/meals'
+
+async function fetchMeals() {
+  const meals = await getMeals()
+  return meals
+}
 
 export default function MealPage() {
-  return <>
+  return <div>
     <header className={classes.header}>
       <h1>
         Delicious meals, created {' '}
@@ -17,7 +24,10 @@ export default function MealPage() {
       </p>
     </header >
     <main className={classes.main}>
-      <MealsGrid meals={[]} />
+      <Suspense>
+        fetching meals...
+      </Suspense>
+      <MealsGrid meals={fetchMeals} />
     </main>
-  </>
+  </div>
 }
